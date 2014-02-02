@@ -45,7 +45,7 @@ namespace WebServer
             /* if the user does not provide a web root, default to /wwwroot */
             string webRoot = args.Count() > 1 ? args[1] : @"C:\wwwroot";
 
-            string defaultFile = args.Count() > 2 ? args[2] : @"cuterabbit.jpg";
+            string defaultFile = args.Count() > 2 ? args[2] : @"index.html";
 
             /* create an instance of the web server and start listening for requests */
             new WebServer(port, webRoot, defaultFile);
@@ -53,7 +53,7 @@ namespace WebServer
 
         public WebServer(int port, string root, string file)
         {
-       
+
 
             /*TODO: add another instance of a IScriptProcessor to handle files of
              * type csweb */
@@ -132,17 +132,6 @@ namespace WebServer
                  */
                 string resource = header.Substring(4, header.IndexOf("HTTP") - 4).Trim();
 
-                /* If the root is being requested, send back a default web page stating
-                 * that this server doesn't support default documents or directory
-                 * listing. 
-                 * 
-                 * TODO: change this to support a default document (i.e. index.html) as
-                 * specified by the user. Such a default document should be able to 
-                 * reside at any level of the directory structure under web root. If
-                 * a default document doesn't exist, an HTTP Not Found response should
-                 * be returned
-                 */
-
                 /* if an actual resource was requested, append the webroot to it to transform 
                  * the path to a system local path and parse the full path to separate the path
                  * from the request variables */
@@ -155,18 +144,19 @@ namespace WebServer
                 Dictionary<string, string> requestParameters = parts.Count() > 1 ? parts[1].Split(new[] { '&' }, StringSplitOptions.RemoveEmptyEntries)
                     .Select(part => part.Split('='))
                      .ToDictionary(split => split[0], split => split[1]) : new Dictionary<string, string>();
-                /* if the path is to a file that exists under the webroot directory, 
-                 * create an HTTP response with that file in the response body */
 
+                // if requesting a directory, look for the default file within said directory
                 if (Directory.Exists(resource))
                 {
                     if (!resource.EndsWith(@"\"))
                     {
-                        resource = string.Concat(resource,@"\");
+                        resource = string.Concat(resource, @"\");
                     }
                     resource = string.Format("{0}{1}", resource, _defaultFile);
                 }
 
+                /* if the path is to a file that exists under the webroot directory, 
+                 * create an HTTP response with that file in the response body */
                 if (File.Exists(resource))
                 {
                     _ProcessBody(socket, resource, requestParameters);
@@ -207,19 +197,13 @@ namespace WebServer
                  * result of the execution returned as the response body rather than the 
                  * file itself */
                 case ".csscript":
-                    {
-                        _scriptProcessor = new CscriptProcessor();
-                        _GenerateScriptResult(socket, path, requestParameters);
-                        return;
-                    }
-                
+                    _scriptProcessor = new CscriptProcessor();
+                    _GenerateScriptResult(socket, path, requestParameters);
+                    return; //break
                 case ".csweb":
-                    {
-                        _scriptProcessor = new CscriptProcessor();
-                        _GenerateScriptResult(socket, path, requestParameters);
-                        return;
-                    }
-
+                    _scriptProcessor = new CWebTemplateProcessor();
+                    _GenerateScriptResult(socket, path, requestParameters);
+                    return; //break
                 default:
                     type = "application/octet-stream";
                     break;
