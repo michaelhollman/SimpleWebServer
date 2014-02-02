@@ -44,6 +44,7 @@
     <Compile Include="CscriptProcessor.cs" />
     <Compile Include="IScriptProcessor.cs" />
     <Compile Include="ScriptResult.cs" />
+    <Compile Include="CWebTemplateProcessor.cs" />
     <Compile Include="WebServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
