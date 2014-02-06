@@ -72,4 +72,4 @@ So called CWebTemplates are basic web templates that allow C# to be embedded dir
 
 The server will evaluate any C# code found between a set of curly braces `{}`. Any SINGLE EXPRESSION found in `@{}` blocks will be written to the outputstream. The variable `wout` is not available to CWebTemplates as it is for CScripts. The `request` dictionary is made available.
 
-*Note:* C# comments are not fully supported in that any `{`, `}`, or `@{`s within comments have the potential the parsing algorithm to get wonderfully confused.
+*Note:* C# comments are not fully supported in that any `{`, `}`, or `@{`s within comments have the potential to cause the parsing algorithm to get wonderfully confused.
