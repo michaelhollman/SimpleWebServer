@@ -1,0 +1,18 @@
+<html>
+    <body>
+        {
+            string foo = "My Great Template!!!";
+            DateTime dt = DateTime.Now;
+			var something = 2;
+			for (var i = 0; i < 43; i++)
+			{
+				something += i % 6;
+			}
+
+        }
+        <h1>@{foo}</h1>
+        <p>The current time is @{dt.ToString("MMM dd, yyyy hh:mm:ss")}</p>
+		
+		<p>Somthing: @{something}</p>
+    </body>
+</html>
