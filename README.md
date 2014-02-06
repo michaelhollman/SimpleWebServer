@@ -4,7 +4,7 @@ This project was originally forked from [icotting/SimpleWebServer](https://githu
 
 # Simple Server
 
-Simple Server is a very basic HTTP server that supports a tiny sub-set of the HTTP specification in order for students to gain a better understanding of how the web works. Simple Server supports the following basic features: 
+Simple Server is a very basic HTTP server that supports a tiny sub-set of the HTTP specification. Simple Server supports the following basic features: 
 
 1. Accepts HTTP GET requests
 	+ allows user definition of the server web root
