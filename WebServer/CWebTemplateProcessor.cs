@@ -96,7 +96,7 @@ namespace WebServer
                 {
                     if (currentType == StatementType.Html)
                     {
-                        // increment i to skip {
+                        // increment i to skip '{'
                         i++;
                         openCurlyCount++;
 
@@ -113,6 +113,12 @@ namespace WebServer
                 {
                     statementBuilder.Append(currentChar);
                 }
+            }
+
+            // just in case there's some unfinished statement
+            if (statementBuilder.Length > 0)
+            {
+                statements.Add(new Statement(statementBuilder.ToString(), currentType));
             }
 
             // Phase 2: split statements into html and code
@@ -164,7 +170,7 @@ namespace WebServer
             var instanceType = instance.GetType();
             var executionMethod = instanceType.GetMethod("Execute", new Type[] { typeof(Dictionary<string, string>), typeof(string[]) });
 
-            var outputExpressions = new string[expressionCount];
+            var outputExpressions = new String[expressionCount];
             try
             {
                 executionMethod.Invoke(instance, new object[] { requestParameters, outputExpressions });
@@ -174,7 +180,7 @@ namespace WebServer
                 return new ScriptResult()
                 {
                     Error = true,
-                    Result = string.Format("<html><body><h1>Runtime Error</h1><p>The following runtime error occurred:</p><p>{0}</p></body></html>", e.InnerException.Message)
+                    Result = string.Format("<html><body><h1>Runtime Error</h1><p>The following runtime error occurred:</p><p>{0}</p></body></html>", e.InnerException != null ? e.InnerException.Message : e.Message)
                 };
             }
 
@@ -185,8 +191,6 @@ namespace WebServer
                 Result = string.Format(htmlBuilder.ToString(), outputExpressions)
             };
         }
-
-
 
         private class Statement
         {
