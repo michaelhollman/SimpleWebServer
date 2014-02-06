@@ -1,3 +1,7 @@
+This project was originally forked from [icotting/SimpleWebServer](https://github.com/icotting/SimpleWebServer).
+
+---
+
 # Simple Server
 
 Simple Server is a very basic HTTP server that supports a tiny sub-set of the HTTP specification in order for students to gain a better understanding of how the web works. Simple Server supports the following basic features: 
@@ -5,8 +9,8 @@ Simple Server is a very basic HTTP server that supports a tiny sub-set of the HT
 1. Accepts HTTP GET requests
 	+ allows user definition of the server web root
 	+ allows user definition of the port number
-	+ [ASSIGNMENT REQUIREMENT]: allows user definition of the default document
-	+ [ASSIGNMENT REQUIREMENT]: supports sub-directory sites
+	+ allows user definition of the default document
+	+ supports sub-directory sites
 
 2. Can handle response types for:
 	+ HTTP OK
@@ -67,12 +71,3 @@ So called CWebTemplates are basic web templates that allow C# to be embedded dir
 ```
 
 The server will evaluate any C# code found between a set of curly braces `{}`. Any SINGLE EXPRESSION found in `@{}` blocks will be written to the outputstream. The variable `wout` is not available to CWebTemplates as it is for CScripts. The `request` dictionary is made available.
-
-## Student Assignment
-The master branch of the Simple Server does not contain an implementation of IScriptProcessor that will process CWebTemplates. Your assignment is to implement such a class and extend the webserver to utilize that class such that it will be capable of serving CWebTemplates. You should complete the following tasks:
-
-1. Write a class named `CWebTemplateProcessor` that implements `IScriptProcessor`, this class should be capable of processing CWebTemplate files
-
-2. Update the WebServer class to serve CWebTemplates using the processor you developed in step 1
-
-3. Update the web server to support default documents in the top-level and sub-directories of the web root. If a user browses to the root of a directory, the default file should be served and, if no default file exists, a 404 should be sent back to the browser. 
